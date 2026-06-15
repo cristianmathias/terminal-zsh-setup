@@ -9,6 +9,8 @@ MANAGED_START="# >>> terminal-zsh-setup managed block >>>"
 MANAGED_END="# <<< terminal-zsh-setup managed block <<<"
 INSTALL_PACKAGES=1
 CONFIGURE_TERMINAL_FONT=1
+INSTALL_NEOVIM_CONFIG=1
+REINSTALL_NEOVIM_CONFIG=0
 
 usage() {
   cat <<'EOF'
@@ -18,6 +20,8 @@ Usage:
 Options:
   --no-packages          Do not run brew bundle. Only apply shell/Git config.
   --no-terminal-font     Do not attempt to configure Terminal.app font.
+  --no-neovim            Do not install the LazyVim starter config.
+  --reinstall-neovim     Back up existing Neovim data and reinstall LazyVim config.
   --help                 Show this help.
 
 What this script does:
@@ -26,6 +30,7 @@ What this script does:
   - replaces only its own managed block in ~/.zshrc;
   - configures Git/delta settings documented in terminal-zsh-guide.md;
   - creates ~/.gitignore_global with common macOS/editor ignores;
+  - installs a LazyVim starter config for Neovim when no config exists;
   - fixes common zsh completion permissions when possible.
 EOF
 }
@@ -46,6 +51,12 @@ parse_args() {
         ;;
       --no-terminal-font)
         CONFIGURE_TERMINAL_FONT=0
+        ;;
+      --no-neovim)
+        INSTALL_NEOVIM_CONFIG=0
+        ;;
+      --reinstall-neovim)
+        REINSTALL_NEOVIM_CONFIG=1
         ;;
       --help|-h)
         usage
@@ -300,6 +311,43 @@ configure_git() {
 EOF
 }
 
+move_path_backup() {
+  local path="$1"
+  [[ -e "$path" || -L "$path" ]] || return 0
+
+  local backup="${path}.backup.$(date +%Y%m%d-%H%M%S)"
+  mv "$path" "$backup"
+  log "Backup created: $backup"
+}
+
+install_neovim_config() {
+  [[ "$INSTALL_NEOVIM_CONFIG" -eq 1 ]] || {
+    log "Skipping Neovim config"
+    return
+  }
+
+  if ! command -v git >/dev/null 2>&1; then
+    warn "git not found; skipping LazyVim starter config"
+    return
+  fi
+
+  if [[ -e "$HOME/.config/nvim" || -L "$HOME/.config/nvim" ]]; then
+    if [[ "$REINSTALL_NEOVIM_CONFIG" -eq 0 ]]; then
+      log "Neovim config already exists; skipping LazyVim starter config"
+      return
+    fi
+
+    move_path_backup "$HOME/.config/nvim"
+    move_path_backup "$HOME/.local/share/nvim"
+    move_path_backup "$HOME/.local/state/nvim"
+    move_path_backup "$HOME/.cache/nvim"
+  fi
+
+  log "Installing LazyVim starter config"
+  mkdir -p "$HOME/.config"
+  git clone --depth 1 https://github.com/LazyVim/starter "$HOME/.config/nvim"
+}
+
 fix_zsh_completion_permissions() {
   log "Fixing zsh completion permissions when possible"
   for dir in \
@@ -348,6 +396,7 @@ main() {
   install_brew_bundle
   install_zsh_block
   configure_git
+  install_neovim_config
   fix_zsh_completion_permissions
   configure_terminal_font
   verify_setup

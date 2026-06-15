@@ -12,6 +12,7 @@ O setup otimiza o `zsh` para uso diario com:
 - busca fuzzy com `fzf`;
 - historico melhorado com `atuin`;
 - Git mais legivel com `delta` e `lazygit`;
+- Neovim moderno com LazyVim;
 - carregamento sob demanda de `nvm` e `sdkman`;
 - completions, sugestoes e syntax highlighting para o shell.
 
@@ -58,7 +59,7 @@ JetBrainsMono Nerd Font Mono
 Pacotes usados pelo setup:
 
 ```bash
-brew install fzf zoxide eza bat git-delta starship atuin direnv fd lazygit zsh-autosuggestions zsh-syntax-highlighting zsh-completions
+brew install fzf zoxide eza bat git-delta starship atuin direnv fd lazygit neovim tree-sitter luarocks stylua shellcheck shfmt zsh-autosuggestions zsh-syntax-highlighting zsh-completions
 brew install --cask font-jetbrains-mono-nerd-font
 ```
 
@@ -86,6 +87,7 @@ O `Brewfile` declara os pacotes de terminal e a fonte para macOS. O instalador:
 - cria backup do `~/.zshrc`;
 - injeta um bloco gerenciado no `~/.zshrc`;
 - configura Git global com `delta` e ignore global;
+- instala o starter config do LazyVim em `~/.config/nvim` quando ainda nao existe configuracao do Neovim;
 - corrige permissoes comuns do `zsh compinit`;
 - tenta configurar a Nerd Font no perfil padrao do Terminal.app;
 - valida a sintaxe final do `~/.zshrc`.
@@ -114,6 +116,18 @@ Se quiser evitar a tentativa de configurar fonte no Terminal.app:
 ./terminal-zsh-setup/install-terminal-zsh-setup.sh --no-terminal-font
 ```
 
+Se quiser pular a configuracao inicial do Neovim:
+
+```bash
+./terminal-zsh-setup/install-terminal-zsh-setup.sh --no-neovim
+```
+
+Se quiser recriar a configuracao do Neovim, fazendo backup da atual:
+
+```bash
+./terminal-zsh-setup/install-terminal-zsh-setup.sh --reinstall-neovim
+```
+
 ### Ubuntu
 
 Para Ubuntu, use:
@@ -130,6 +144,7 @@ Esse script:
 - instala a JetBrainsMono Nerd Font em `~/.local/share/fonts/JetBrainsMonoNerdFont`;
 - aplica o mesmo bloco gerenciado no `~/.zshrc`;
 - configura Git/delta;
+- instala o starter config do LazyVim em `~/.config/nvim` quando ainda nao existe configuracao do Neovim;
 - corrige permissoes comuns de completions;
 - valida a sintaxe do `~/.zshrc`.
 
@@ -143,6 +158,13 @@ Se quiser pular a instalacao da fonte:
 
 ```bash
 ./terminal-zsh-setup/install-terminal-zsh-setup-ubuntu.sh --no-font
+```
+
+Se quiser pular ou recriar a configuracao inicial do Neovim:
+
+```bash
+./terminal-zsh-setup/install-terminal-zsh-setup-ubuntu.sh --no-neovim
+./terminal-zsh-setup/install-terminal-zsh-setup-ubuntu.sh --reinstall-neovim
 ```
 
 No Ubuntu, depois da instalacao, selecione manualmente a fonte `JetBrainsMono Nerd Font Mono` no terminal usado, como GNOME Terminal, Tilix, WezTerm, Kitty ou outro.

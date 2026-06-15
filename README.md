@@ -2,7 +2,7 @@
 
 Setup reproducivel para configurar um terminal `zsh` moderno em macOS e Ubuntu.
 
-Inclui instaladores, lista de pacotes e guias de uso para ferramentas como `starship`, `eza`, `bat`, `zoxide`, `fzf`, `atuin`, `direnv`, `fd`, `ripgrep`, `git-delta`, `lazygit`, `zsh-autosuggestions`, `zsh-syntax-highlighting` e `zsh-completions`.
+Inclui instaladores, lista de pacotes e guias de uso para ferramentas como `starship`, `eza`, `bat`, `zoxide`, `fzf`, `atuin`, `direnv`, `fd`, `ripgrep`, `git-delta`, `lazygit`, `neovim`, `zsh-autosuggestions`, `zsh-syntax-highlighting` e `zsh-completions`.
 
 ## Estrutura
 
@@ -32,6 +32,13 @@ Aplicar apenas configuracoes, sem instalar pacotes:
 ```bash
 ./terminal-zsh-setup/install-terminal-zsh-setup.sh --no-packages
 ./terminal-zsh-setup/install-terminal-zsh-setup-ubuntu.sh --no-packages
+```
+
+Pular a configuracao inicial do Neovim:
+
+```bash
+./terminal-zsh-setup/install-terminal-zsh-setup.sh --no-neovim
+./terminal-zsh-setup/install-terminal-zsh-setup-ubuntu.sh --no-neovim
 ```
 
 ## Aviso
