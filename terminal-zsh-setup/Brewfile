@@ -1,0 +1,18 @@
+# Packages documented in terminal-zsh-guide.md.
+
+brew "atuin"
+brew "bat"
+brew "direnv"
+brew "eza"
+brew "fd"
+brew "fzf"
+brew "git-delta"
+brew "lazygit"
+brew "ripgrep"
+brew "starship"
+brew "zoxide"
+brew "zsh-autosuggestions"
+brew "zsh-completions"
+brew "zsh-syntax-highlighting"
+
+cask "font-jetbrains-mono-nerd-font"
